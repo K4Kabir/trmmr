@@ -124,6 +124,7 @@ const parser = new UAParser();
 export const storeClicks = async function ({ id, original_url }) {
   try {
     const res = parser.getResult();
+    console.log(res, "RESULT");
     const device = res.type || "desktop";
     let res2 = await fetch("https://ipapi.co/json");
     const { country, city } = await res2.json();
