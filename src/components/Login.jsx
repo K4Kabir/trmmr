@@ -57,7 +57,7 @@ const Login = () => {
             onChange={(e) => handleInput(e)}
             name="email"
             required
-            type="text"
+            type="email"
             placeholder="Email"
           />
           <Input

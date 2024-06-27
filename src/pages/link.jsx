@@ -11,6 +11,7 @@ import MainLoader from "@/components/Loader";
 import LocationStrat from "@/components/location-strat";
 import DeviceStrat from "@/components/device-strat";
 import baseUrl from "@/app-layout/base-url";
+import { QRCode } from "react-qrcode-logo";
 
 const Link = function () {
   const { id } = useParams();
@@ -82,7 +83,7 @@ const Link = function () {
                 {baseUrl}/
                 {data?.custom_url ? data?.custom_url : data?.short_url}
               </span>
-              <span className="flex items-center gap-1 hover:underline cursor-pointer py-3">
+              <span className="flex items-center gap-1 hover:underline cursor-pointer py-3 truncate">
                 <LinkIcon />
                 {data?.original_url}
               </span>
@@ -91,11 +92,9 @@ const Link = function () {
               </span>
             </div>
           </CardContent>
-          <img
-            className="h-[300px] object-contain py-4"
-            src={data?.qr}
-            alt="QR Image"
-          />
+          <div className="flex justify-center items-center p-4">
+            <QRCode value={`${baseUrl}${data?.short_url}`} />
+          </div>
         </Card>
       </div>
       <div>
@@ -107,7 +106,7 @@ const Link = function () {
             <p>{sd?.length}</p>
           </CardContent>
         </Card>
-        <div className="flex">
+        <div className="flex flex-col md:flex-row">
           <LocationStrat data={sd} />
           <DeviceStrat data={sd} />
         </div>

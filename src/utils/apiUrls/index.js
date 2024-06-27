@@ -1,12 +1,15 @@
 import { UAParser } from "ua-parser-js";
 import { supabase } from "../supabase";
 
-export const getUrls = async function (user_id) {
+export const getUrls = async function (user_id, title) {
   try {
-    const { data, error } = await supabase
-      .from("urls")
-      .select("*")
-      .eq("user_id", user_id);
+    let query = supabase.from("urls").select("*").eq("user_id", user_id);
+
+    if (title) {
+      query = query.ilike("title", `%${title}%`);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
       throw new Error("Cannot get URLs");
@@ -68,22 +71,24 @@ export const deleteUrls = async function (urlId) {
   }
 };
 
-export const createUrl = async function (
-  { title, long_url, custom_url, user_id },
-  qrCode
-) {
+export const createUrl = async function ({
+  title,
+  long_url,
+  custom_url,
+  user_id,
+}) {
   const shortUrl = Math.random().toString(36).substring(2, 6);
-  const fileName = `qr-${shortUrl}`;
+  // const fileName = `qr-${shortUrl}`;
 
-  const { error: storageError } = await supabase.storage
-    .from("qrs")
-    .upload(fileName, qrCode);
+  // const { error: storageError } = await supabase.storage
+  //   .from("qrs")
+  //   .upload(fileName, qrCode);
 
-  if (storageError) {
-    throw new Error("Something went wrong while saving qr code");
-  }
+  // if (storageError) {
+  //   throw new Error("Something went wrong while saving qr code");
+  // }
 
-  const qr = `https://ceerhlurthkovoqmvlay.supabase.co/storage/v1/object/public/qrs/${fileName}`;
+  //const qr = `https://ceerhlurthkovoqmvlay.supabase.co/storage/v1/object/public/qrs/${fileName}`;
 
   const { data, error } = await supabase
     .from("urls")
@@ -94,7 +99,7 @@ export const createUrl = async function (
         custom_url: custom_url || null,
         user_id,
         short_url: shortUrl,
-        qr,
+        // qr,
       },
     ])
     .select();

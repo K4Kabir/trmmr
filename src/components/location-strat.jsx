@@ -19,7 +19,7 @@ const LocationStrat = function ({ data }) {
   console.log(result);
 
   return (
-    <div className="p-5 flex justify-center items-center">
+    <div className="p-5">
       <LineChart
         width={300}
         height={300}

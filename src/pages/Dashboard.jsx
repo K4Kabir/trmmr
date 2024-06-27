@@ -16,6 +16,7 @@ const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useContext(User);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     if (searchParams.get("createNew") && !isAuthenticated) {
@@ -82,7 +83,7 @@ const Dashboard = () => {
       </div>
       <div className="relative mt-5">
         <Input
-          onChange={(e) => handleSearch(e)}
+          onChange={(e) => setQuery(e.target.value)}
           type="text"
           placeholder="Filter"
         />

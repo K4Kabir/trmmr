@@ -12,12 +12,12 @@ import { useSearchParams } from "react-router-dom";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
 import { useContext, useRef, useState } from "react";
-import { QRCode } from "react-qrcode-logo";
 import { User } from "@/context/UserContext";
 import { createUrl } from "@/utils/apiUrls";
 import Error from "./error";
 import { Loader } from "lucide-react";
 import { toast } from "./ui/use-toast";
+import baseUrl from "@/app-layout/base-url";
 
 const CreateNew = function ({ fetchUrl }) {
   const [searchParam, setSearchParams] = useSearchParams();
@@ -26,7 +26,6 @@ const CreateNew = function ({ fetchUrl }) {
   const [formData, setFormData] = useState({ long_url: createNew || "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const ref = useRef();
 
   const handleInput = function (e) {
     setSearchParams({});
@@ -45,22 +44,13 @@ const CreateNew = function ({ fetchUrl }) {
         <DialogHeader>
           <DialogTitle>Create New !</DialogTitle>
         </DialogHeader>
-        {formData?.long_url && (
-          <div className="flex items-center justify-center">
-            <QRCode value={formData?.long_url} size={150} ref={ref} />
-          </div>
-        )}
         <form
           onSubmit={async (e) => {
             e.preventDefault();
             setError("");
             setLoading(true);
             try {
-              const canvas = ref.current.canvasRef.current;
-              const blob = await new Promise((resolve) =>
-                canvas.toBlob(resolve)
-              );
-              await createUrl({ ...formData, user_id: user?.id }, blob);
+              await createUrl({ ...formData, user_id: user?.id });
             } catch (error) {
               setError(error.message);
             } finally {
@@ -93,7 +83,7 @@ const CreateNew = function ({ fetchUrl }) {
             required
           />
           <div className="flex items-center gap-3">
-            <Card className="p-2">trimmr.in</Card> /
+            <Card className="p-2">{baseUrl}</Card> /
             <Input
               onChange={(e) => handleInput(e)}
               name="custom_url"

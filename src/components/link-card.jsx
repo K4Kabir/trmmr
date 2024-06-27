@@ -6,17 +6,16 @@ import { toast } from "./ui/use-toast";
 import useFetch from "@/lib/useFetch";
 import { deleteUrls } from "@/utils/apiUrls";
 import baseUrl from "@/app-layout/base-url";
+import { QRCode } from "react-qrcode-logo";
 
 const LinkCard = function ({ data, fetchUrl }) {
   const { loading, fn: deleteFn, error } = useFetch(deleteUrls, data?.id);
 
   return (
     <div className="flex flex-col md:flex-row gap-5 border p-4 bg-gray-900 mt-2 rounded-lg">
-      <img
-        src={data?.qr}
-        className="h-[150px] object-contain ring ring-blue-500"
-        alt="qr_code"
-      />
+      <div>
+        <QRCode value={`${baseUrl}${data.short_url}`} />
+      </div>
       <Link to={`/link/${data?.id}`} className="flex flex-col flex-1">
         <span className="text-3xl hover:underline cursor-poiner font-extrabold">
           {data.title}
@@ -24,7 +23,7 @@ const LinkCard = function ({ data, fetchUrl }) {
         <span className="text-2xl text-blue-400 font-bold hover:underline cursor-pointer">
           {baseUrl}/{data?.custom_url ? data?.custom_url : data?.short_url}
         </span>
-        <span className="flex items-center gap-1 hover:underline cursor-pointer">
+        <span className="flex items-center gap-1 hover:underline cursor-pointer truncate">
           {data?.original_url}
         </span>
         <span className="font-extralight text-sm mt-auto ">

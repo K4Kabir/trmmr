@@ -25,7 +25,7 @@ const DeviceStrat = function ({ data }) {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   return (
-    <div className="flex justify-center items-center">
+    <div>
       <PieChart width={400} height={400}>
         <Pie
           data={result}
