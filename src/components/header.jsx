@@ -54,7 +54,7 @@ const Header = () => {
                 <DropdownMenuItem
                   onClick={() => {
                     fn().then(() => {
-                      window.location.reload();
+                      navigate("/auth");
                     });
                   }}
                   className="text text-red-500"
