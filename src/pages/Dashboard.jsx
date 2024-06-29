@@ -11,12 +11,14 @@ import { getClicksForUrl } from "@/utils/apiUrls/clicks";
 import MainLoader from "@/components/Loader";
 import LinkCard from "@/components/link-card";
 import CreateNew from "@/components/create-new";
+import useDebounce from "@/utils/hooks/useDebounce.js";
 
 const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useContext(User);
   const [query, setQuery] = useState("");
+  const {debouncedValue} = useDebounce(query, 500);
 
   useEffect(() => {
     if (searchParams.get("createNew") && !isAuthenticated) {
@@ -42,18 +44,14 @@ const Dashboard = () => {
   );
 
   useEffect(() => {
-    getUrlsFn();
-  }, []);
+    getUrlsFn(debouncedValue);
+  }, [debouncedValue]);
 
   useEffect(() => {
     if (urlData?.length) {
       getClicksFn();
     }
   }, [urlData?.length]);
-
-  if (urlLoading) {
-    return <MainLoader />;
-  }
 
   return (
     <div>
@@ -90,7 +88,7 @@ const Dashboard = () => {
         <FilterIcon className="absolute top-2 right-2" />
       </div>
       <div>
-        {urlData?.map((d, index) => {
+        { urlLoading ? <MainLoader/> : urlData?.map((d, index) => {
           return <LinkCard key={index} data={d} fetchUrl={getUrlsFn} />;
         })}
       </div>
