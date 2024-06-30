@@ -15,6 +15,20 @@ export const LoginFn = async function (formData) {
   }
 };
 
+export const LoginWithGoogle = async function () {
+  try {
+    let { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 export const getCurrentUser = async function () {
   const { data, error } = await supabase.auth.getSession();
   if (!data) return null;

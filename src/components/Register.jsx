@@ -44,6 +44,7 @@ const Register = () => {
         onSubmit={async (e) => {
           e.preventDefault();
           await fn();
+          navigate("/dashboard");
         }}
       >
         <CardHeader>
