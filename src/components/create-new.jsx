@@ -26,6 +26,7 @@ const CreateNew = function ({ fetchUrl }) {
   const [formData, setFormData] = useState({ long_url: createNew || "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [open, setOpen] = useState(false);
 
   const handleInput = function (e) {
     setSearchParams({});
@@ -36,7 +37,7 @@ const CreateNew = function ({ fetchUrl }) {
   };
 
   return (
-    <Dialog defaultOpen={createNew}>
+    <Dialog open={open} defaultOpen={createNew} onOpenChange={setOpen}>
       <DialogTrigger>
         <Button>Create New</Button>
       </DialogTrigger>
@@ -51,11 +52,13 @@ const CreateNew = function ({ fetchUrl }) {
             setLoading(true);
             try {
               await createUrl({ ...formData, user_id: user?.id });
+              setOpen(false);
             } catch (error) {
               setError(error.message);
             } finally {
               setLoading(false);
               await fetchUrl();
+
               toast({
                 title: (
                   <p className="text text-green-500">Created Successfully</p>
