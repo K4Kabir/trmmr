@@ -32,9 +32,9 @@ const Register = () => {
   useEffect(() => {
     if (data && error === null) {
       toast({
-        title: "User Created Successfully",
-        description: "Please Login again with your credentials",
+        title: <p className="text text-green-400">User Created Successfully</p>,
       });
+      navigate("/dashboard");
     }
   }, [data, error]);
 
@@ -44,7 +44,6 @@ const Register = () => {
         onSubmit={async (e) => {
           e.preventDefault();
           await fn();
-          navigate("/dashboard");
         }}
       >
         <CardHeader>
